@@ -1,0 +1,30 @@
+#!/bin/sh
+
+set -eu
+
+WORK_DIR=$(mktemp -d)
+SOURCE_DIR="$WORK_DIR/source"
+
+cleanup()
+{
+    rm -rf "$WORK_DIR"
+}
+trap cleanup EXIT HUP INT TERM
+
+echo "ci: preparing a private writable zstd source tree"
+cp -a /source "$SOURCE_DIR"
+
+echo "ci: building zstd 1.4.7"
+cd "$SOURCE_DIR"
+make -j8
+
+echo "ci: running the upstream test target"
+make -j8 check
+
+echo "ci: checking a command-line compression round trip"
+printf 'Abuild zstd compatibility fixture\n' > "$WORK_DIR/payload"
+./zstd -q "$WORK_DIR/payload" -o "$WORK_DIR/payload.zst"
+./zstd -q -d "$WORK_DIR/payload.zst" -o "$WORK_DIR/restored"
+cmp "$WORK_DIR/payload" "$WORK_DIR/restored"
+
+echo "ci: all historical Abuild zstd checks passed"

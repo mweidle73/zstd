@@ -1,3 +1,14 @@
+> **Abuild archive.** This branch preserves the exact upstream `v1.4.7`
+> revision formerly used by
+> [Abuild](https://github.com/mweidle73/abuild), with a GitHub-only CI and
+> maintenance overlay. The authoritative project is
+> [facebook/zstd](https://github.com/facebook/zstd). `master` mirrors
+> upstream `dev`, `abuild` points directly at the unmodified historical
+> Abuild pin, and `abuild-gh` is this default maintenance branch. Abuild
+> stopped building vendored zstd sources in 2026 and now uses the
+> distribution tool and development library. See
+> [Continuous integration](#abuild-archive-continuous-integration) below.
+
 <p align="center"><img src="https://raw.githubusercontent.com/facebook/zstd/dev/doc/images/zstd_logo86.png" alt="Zstandard"></p>
 
 __Zstandard__, or `zstd` as short version, is a fast lossless compression algorithm,
@@ -197,3 +208,21 @@ The "dev" branch is the one where all contributions are merged before reaching "
 If you plan to propose a patch, please commit into the "dev" branch, or its own feature branch.
 Direct commit to "master" are not permitted.
 For more information, please read [CONTRIBUTING](CONTRIBUTING.md).
+
+## Abuild archive continuous integration
+
+Run the same Trixie check locally with Docker:
+
+```sh
+.github/ci/run .github/ci/check
+```
+
+The check copies the preserved source into a private writable directory,
+builds it with parallelism enabled, runs the upstream test target, and verifies
+a command-line compression round trip. The build executes as the invoking
+non-root user in a read-only container without network access or Linux
+capabilities.
+
+The weekly upstream monitor checks whether `master` still matches upstream
+`dev` and whether all versioned release-tag refs are mirrored exactly. It
+reports drift but never updates branches or tags automatically.
