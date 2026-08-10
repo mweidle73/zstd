@@ -19,7 +19,7 @@ jobs:
   osx:
     runs-on: macos-10.15
     steps:
-    - uses: actions/checkout@v7
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
     - name: OS-X
       run: |
         make test
@@ -28,7 +28,7 @@ jobs:
   zbuff:
     runs-on: ubuntu-16.04
     steps:
-    - uses: actions/checkout@v7
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
     - name: zbuff test
       run: |
         make -C tests test-zbuff
@@ -36,7 +36,7 @@ jobs:
   tsan:
     runs-on: ubuntu-16.04
     steps:
-    - uses: actions/checkout@v7
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
     - name: thread sanitizer
       run: |
         sudo apt-add-repository "deb http://llvm.org/apt/trusty/ llvm-toolchain-trusty-3.8 main"
@@ -47,7 +47,7 @@ jobs:
   zlib-wrapper:
     runs-on: ubuntu-16.04
     steps:
-    - uses: actions/checkout@v7
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
     - name: zlib wrapper test
       run: |
         make gpp6install valgrindinstall
@@ -57,7 +57,7 @@ jobs:
   lz4-threadpool-partial-libs:
     runs-on: ubuntu-16.04
     steps:
-    - uses: actions/checkout@v7
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
     - name: LZ4, thread pool, and partial libs testslib wrapper test
       run: |
         make lz4install
